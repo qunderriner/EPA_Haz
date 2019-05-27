@@ -154,9 +154,9 @@ def get_xy(df, response, features):
 
 
 def choose_features(data, response, features):
-    
-    #delete below before shipping 
-
+    """
+    Pick best features from features list 
+    """
     X,y = get_xy(data, response, features)
 
     sel = sklearn.feature_selection.SelectFromModel(sklearn.ensemble.RandomForestClassifier(n_estimators = 100))
@@ -305,12 +305,12 @@ def process(data, dummy_list=None, discrete_list=None, impute_median_list=None, 
     return data 
 
 def preprocess(df, drop_list):
+    """
     
-    #drop values that wont be needed for prediction. Dropping location values here even though they likley
-    #would help prediction because policy wise, we can't reconmond that schools move
-
-    #drop data before 1990
-
+    drop values that wont be needed for prediction. Drop data before 1990.
+    Turn EVALUATION_START_DATE to datetime object and make a predvar variable based on 
+    whether a violoation was found or not. 
+    """
 
     if len(drop_list) > 0:
         df = df.drop(drop_list, axis=1)
@@ -327,9 +327,6 @@ def preprocess(df, drop_list):
 
     #df[colname] = (df[colname]).astype(int)
 
-
-
-
 #inspiration for below from https://github.com/rayidghani/magicloops/blob/master/simpleloop.py
 def run_the_models(data, models_to_run, date_col, response, features, dummy_list, discrete_list, impute_median_list, impute_mean_list):
     """
@@ -339,6 +336,10 @@ def run_the_models(data, models_to_run, date_col, response, features, dummy_list
         models_to_run: list of models to run 
         response: column name of y variable
         features: list of column names for model features 
+        dummy_list: list of columns 2 dummy 
+        discrete_list: list of columns 2 discretize 
+        impute_median_list: list of columns 2 impute the median of the column 
+        impute_mean_list: list of columns 2 impute the mean of the column 
     returns:
         dataframe 
     """
